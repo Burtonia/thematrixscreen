@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" id="desktop-responsiveness">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="https://www.timdillon.com/">
+    <meta name="generator" content="Alex Burton | Web Developer | alexburton.com">
+    <title>The Matrix Screen - by Alexander Burton</title>
+    <meta name="description" content="The Matrix Screen is a fun passion project I created wiith the goal of recreating The Matrix Screen effect using HTML, CSS, and JavaScript.">
+    <link rel="canonical" href="https://thematrixscreen.com">
+    <meta property="og:title" content="The Matrix Screen - by Alexander Burton">
+    <meta property="og:url" content="https://thematrixscreen.com">
+    <meta property="og:site_name" content="The Matrix Screen - by Alexander Burton">
+    <meta property="og:image" content="screenshot.png">
+    <meta name="keywords" content="Matrix, The Matrix, Screen, Screensaver">
+    <meta name="twitter:card" content="The Matrix Screen - by Alexander Burton">
+    <meta name="twitter:title" content="The Matrix Screen - by Alexander Burton">
+    <meta property="twitter:image" content="screenshot.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNTJBHNDKN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-FNTJBHNDKN');
+    </script>
+
+  </head>
+  <body></body>
+  <script type="text/javascript">
+    // Matrix Screen Saver JS
+    // Created by Alexander Burton on 2022-03-28
+    // https://alexburton.com
+    class Matrix {
+      constructor() {
+        this.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,<>?;!@#$%^&*()-_+=[]{}|\~☺Bé┴☻Câ├♥D┬─♦Eä┼♣Fà╞♠Gå╟•Hç╚◘Iê╔○Jë╩◙Kè╦♂Lï╠♀Mî═♪Nì╬♫OÄ╧☼PÅ╨►QÉ╤◄Ræ╥↕SÆ╙‼Tô╘¶Uö╒§Vò╓▬Wû╫↨Xù╪↑Yÿ┘↓ZÖ┌→[Ü█←\¢▄∟]£▌↔^¥▐▲_₧▀▼`ƒα!aáß“bíΓ#cóπ$dúΣeñσx%xfÑµ‘gªτ(hºΦ)i¿Θ*j⌐Ω+k¬δ,l½∞-m¼φ.n¡ε/o«∩p»≡q░±r▒≥s▓≤t│⌠u┤⌡v╡÷w╢≈x╖°y╕∙:z╣·;{║√<|╗ⁿ=}╝²>~╜■?⌂╛™@Ç┐®Aü└©";
+      }
+
+      inits() {return {
+        build_matrix: () => {document.body.insertAdjacentHTML('beforeend', this._templates.matrix());}
+      }}
+
+      actions() {return {
+        random: (multiplier) => {return Math.floor(Math.random() * multiplier);},
+        randomChar: (multiplier) => {return this.chars[this._actions.random(multiplier)];},
+      }}
+
+      templates() {return {
+        matrix: () => {
+          let styles = `<style>
+                          body {background:black; overflow:hidden; height:1200px; font-family:sans-serif;}
+                          #matrix {width:100%; height:100%;}
+                          #matrix .col {width:16px; display:inline-block; color: #000000; text-shadow:1px 1px #000000; writing-mode:vertical-rl; text-orientation:upright;}
+                          /*@keyframes vertical { 0% {transform:translateY(-1000px);} 70% {transform:translateY(1000px);} 100% {transform:translateY(1000px);}}*/
+                          /*[data-col] {animation: 20s vertical linear infinite;}*/
+                          @keyframes typing {0% {color: #000000; text-shadow:1px 1px #000000;} 19% {color: #000000; text-shadow:1px 1px #000000;} 20% {color:#ffffff; text-shadow:1px 1px #ffffff;} 30% {color: #22ff22; text-shadow:1px 1px #ffffff;} 40% {color: #000000; text-shadow:1px 1px #000000;} 100% {color: #000000; text-shadow:1px 1px #000000;}}
+                          .typing {animation: 20s typing linear infinite;}
+                          #author {position:absolute; bottom:20px; right:20px; width:250px; min-height:20px; background:#000000; display:block; border:solid 3px #22ff22; color:#22ff22; opacity:0.5; text-align:center; padding:1rem; cursor:pointer; font-family:sans-serif;}
+                          #author:hover {background:#ffffff; opacity:1;}
+                        </style>`;
+          let columns = ``, i = 0;
+          let width = document.querySelector('body').getBoundingClientRect().width;
+          let columnCount = Math.floor(width/16);
+          for(i = 0; i < columnCount; i++) {
+            let j = 0;
+            let anim_delay = this._actions.random(30);
+            let anim_duration = this._actions.random(10) + 50;
+            let charCount = 64;
+            let chars = ``;
+            for(j = 0; j < charCount; j++) {
+              chars += `<span class="typing" style="animation-delay:${(anim_delay + (0.25 * (j - charCount)))}s; animation-duration:${anim_duration - 20}s;">${this._actions.randomChar(334)}</span>`;
+            }
+            columns += `<div data-col="${i}" class="col" style="animation-delay:${anim_delay}s; animation-duration:${anim_duration}s;">${chars}</div>`;
+          }
+          return `${styles}<div id="matrix">${columns}<a id="author" href="https://alexburton.com?ws=thematrixscreencom" target="_blank"><h1>The Matrix Screen <br/>By Alexander Burton</h1></a></div>`;
+        }
+      }}
+
+      get _inits() {return this.inits();}
+      get _actions() {return this.actions();}
+      get _templates() {return this.templates();}
+      get _init() {Object.keys(this._inits).forEach(init => {this._inits[init]();});}
+    }
+
+    const matrix = new Matrix();
+    console.log({matrix});
+    matrix._init;
+  </script>
+</html>
